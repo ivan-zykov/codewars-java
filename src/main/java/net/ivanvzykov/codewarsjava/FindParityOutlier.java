@@ -1,27 +1,21 @@
 package net.ivanvzykov.codewarsjava;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 // https://www.codewars.com/kata/5526fc09a1bbd946250002dc
 public class FindParityOutlier {
     static int find(int[] integers) {
-        var map = new HashMap<Boolean, List<Integer>>();
-
-        for (int i : integers) {
-            var isEven = i % 2 == 0;
-            map.merge(isEven, List.of(i), (existingValue, newValue) -> {
-                var newList = new ArrayList<>(existingValue);
-                newList.addAll(newValue);
-                return newList;
-            });
+        var sum = 0;
+        for (int i = 0; i < 3; i++) {
+            sum += (integers[i] % 2 == 0) ? 0 : 1;
         }
 
-        return map.values().stream()
-                .filter(entry -> entry.size() == 1)
-                .findFirst().orElseThrow()
-                .stream()
-                .findFirst().orElseThrow();
+        var arrayIsMostlyEven = sum <= 1;
+
+        for (int i : integers) {
+            if ((arrayIsMostlyEven != (i % 2 == 0))) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }
