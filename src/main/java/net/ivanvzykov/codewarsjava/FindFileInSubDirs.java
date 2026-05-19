@@ -48,10 +48,8 @@ public class FindFileInSubDirs {
 
         try (Stream<Path> stream = Files.walk(startingPath, depth)) {
             result = stream
-                    .filter(file -> !Files.isDirectory(file))
+                    .filter(Files::isRegularFile)
                     .filter(file -> fileToSearch.equals(file.getFileName().toString()))
-                    .map(startingPath::relativize)
-                    .map(startingPath::resolve)
                     .map(Path::toString)
                     .findFirst()
                     .orElse(null);
